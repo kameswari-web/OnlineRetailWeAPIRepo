@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Online_Products_PurchaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_Customers">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="EmailId" Type="varchar" MaxLength="30" />
+    <Property Name="Address" Type="varchar" MaxLength="50" />
+    <Property Name="PhoneNo" Type="varchar" MaxLength="15" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Online_Products_Purchase.dbo.tbl_OrderItems' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tbl_OrderItems">
+    <Key>
+      <PropertyRef Name="OrderItemId" />
+      <PropertyRef Name="Quantity" />
+    </Key>
+    <Property Name="OrderItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderId" Type="int" />
+    <Property Name="ProductId" Type="int" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_Orders">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="OrderStatus" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Order_Date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="TotalQuantity" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__tbl_Order__Custo__47DBAE45">
+    <End Role="tbl_Customers" Type="Self.tbl_Customers" Multiplicity="0..1" />
+    <End Role="tbl_Orders" Type="Self.tbl_Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Customers">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="tbl_Orders">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_Order__Order__4AB81AF0">
+    <End Role="tbl_Orders" Type="Self.tbl_Orders" Multiplicity="0..1" />
+    <End Role="tbl_OrderItems" Type="Self.tbl_OrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Orders">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="tbl_OrderItems">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_Order__Produ__4BAC3F29">
+    <End Role="tbl_Products" Type="Self.tbl_Products" Multiplicity="0..1" />
+    <End Role="tbl_OrderItems" Type="Self.tbl_OrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="tbl_OrderItems">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Online_Products_PurchaseModelStoreContainer">
+    <EntitySet Name="tbl_Customers" EntityType="Self.tbl_Customers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Orders" EntityType="Self.tbl_Orders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Products" EntityType="Self.tbl_Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_OrderItems" EntityType="Self.tbl_OrderItems" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tbl_OrderItems].[OrderItemId] AS [OrderItemId], 
+    [tbl_OrderItems].[OrderId] AS [OrderId], 
+    [tbl_OrderItems].[ProductId] AS [ProductId], 
+    [tbl_OrderItems].[Quantity] AS [Quantity]
+    FROM [dbo].[tbl_OrderItems] AS [tbl_OrderItems]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__tbl_Order__Custo__47DBAE45" Association="Self.FK__tbl_Order__Custo__47DBAE45">
+      <End Role="tbl_Customers" EntitySet="tbl_Customers" />
+      <End Role="tbl_Orders" EntitySet="tbl_Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_Order__Order__4AB81AF0" Association="Self.FK__tbl_Order__Order__4AB81AF0">
+      <End Role="tbl_Orders" EntitySet="tbl_Orders" />
+      <End Role="tbl_OrderItems" EntitySet="tbl_OrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_Order__Produ__4BAC3F29" Association="Self.FK__tbl_Order__Produ__4BAC3F29">
+      <End Role="tbl_Products" EntitySet="tbl_Products" />
+      <End Role="tbl_OrderItems" EntitySet="tbl_OrderItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

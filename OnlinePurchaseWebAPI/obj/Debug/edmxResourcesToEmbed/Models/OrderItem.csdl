@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Online_Products_PurchaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailId" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tbl_Orders" Relationship="Self.FK__tbl_Order__Custo__47DBAE45" FromRole="tbl_Customers" ToRole="tbl_Orders" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="OrderStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Order_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="tbl_Customers" Relationship="Self.FK__tbl_Order__Custo__47DBAE45" FromRole="tbl_Orders" ToRole="tbl_Customers" />
+    <NavigationProperty Name="tbl_OrderItems" Relationship="Self.FK__tbl_Order__Order__4AB81AF0" FromRole="tbl_Orders" ToRole="tbl_OrderItems" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <Property Name="TotalQuantity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbl_OrderItems" Relationship="Self.FK__tbl_Order__Produ__4BAC3F29" FromRole="tbl_Products" ToRole="tbl_OrderItems" />
+  </EntityType>
+  <EntityType Name="OrderItems">
+    <Key>
+      <PropertyRef Name="OrderItemId" />
+      <PropertyRef Name="Quantity" />
+    </Key>
+    <Property Name="OrderItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderId" Type="Int32" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbl_Orders" Relationship="Self.FK__tbl_Order__Order__4AB81AF0" FromRole="tbl_OrderItems" ToRole="tbl_Orders" />
+    <NavigationProperty Name="tbl_Products" Relationship="Self.FK__tbl_Order__Produ__4BAC3F29" FromRole="tbl_OrderItems" ToRole="tbl_Products" />
+  </EntityType>
+  <Association Name="FK__tbl_Order__Custo__47DBAE45">
+    <End Role="tbl_Customers" Type="Online_Products_PurchaseModel.Customers" Multiplicity="0..1" />
+    <End Role="tbl_Orders" Type="Online_Products_PurchaseModel.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Customers">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="tbl_Orders">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_Order__Order__4AB81AF0">
+    <End Role="tbl_Orders" Type="Online_Products_PurchaseModel.Orders" Multiplicity="0..1" />
+    <End Role="tbl_OrderItems" Type="Online_Products_PurchaseModel.OrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Orders">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="tbl_OrderItems">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_Order__Produ__4BAC3F29">
+    <End Role="tbl_Products" Type="Online_Products_PurchaseModel.Products" Multiplicity="0..1" />
+    <End Role="tbl_OrderItems" Type="Online_Products_PurchaseModel.OrderItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="tbl_OrderItems">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OnlinePurchaseDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="Online_Products_PurchaseModel.Customers" />
+    <EntitySet Name="Orders" EntityType="Online_Products_PurchaseModel.Orders" />
+    <EntitySet Name="Products" EntityType="Online_Products_PurchaseModel.Products" />
+    <EntitySet Name="OrderItems" EntityType="Online_Products_PurchaseModel.OrderItems" />
+    <AssociationSet Name="FK__tbl_Order__Custo__47DBAE45" Association="Self.FK__tbl_Order__Custo__47DBAE45">
+      <End Role="tbl_Customers" EntitySet="Customers" />
+      <End Role="tbl_Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_Order__Order__4AB81AF0" Association="Self.FK__tbl_Order__Order__4AB81AF0">
+      <End Role="tbl_Orders" EntitySet="Orders" />
+      <End Role="tbl_OrderItems" EntitySet="OrderItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_Order__Produ__4BAC3F29" Association="Self.FK__tbl_Order__Produ__4BAC3F29">
+      <End Role="tbl_Products" EntitySet="Products" />
+      <End Role="tbl_OrderItems" EntitySet="OrderItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
