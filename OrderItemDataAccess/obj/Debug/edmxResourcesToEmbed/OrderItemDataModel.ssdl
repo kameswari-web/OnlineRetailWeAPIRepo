@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Online_Products_PurchaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_OrderItems">
+    <Key>
+      <PropertyRef Name="OrderItemId" />
+    </Key>
+    <Property Name="OrderItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderId" Type="int" />
+    <Property Name="ProductId" Type="int" />
+    <Property Name="ProductName" Type="varchar" MaxLength="30" />
+    <Property Name="CustomerName" Type="varchar" MaxLength="30" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="ItemPrice" Type="float" />
+    <Property Name="TotalPrice" Type="float" />
+  </EntityType>
+  <Function Name="sp_Add_OrderItemDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CustName" Type="varchar" Mode="In" />
+    <Parameter Name="EmailId" Type="varchar" Mode="In" />
+    <Parameter Name="Address" Type="varchar" Mode="In" />
+    <Parameter Name="PhoneNo" Type="varchar" Mode="In" />
+    <Parameter Name="OrderStatus" Type="varchar" Mode="In" />
+    <Parameter Name="ProductName" Type="varchar" Mode="In" />
+    <Parameter Name="Quantity" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_Cancel_OrderItems" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="OrderId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_Update_OrderItemsQuantity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="OrderId" Type="int" Mode="In" />
+    <Parameter Name="ProdId" Type="int" Mode="In" />
+    <Parameter Name="ItemQuantity" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="Online_Products_PurchaseModelStoreContainer">
+    <EntitySet Name="tbl_OrderItems" EntityType="Self.tbl_OrderItems" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
